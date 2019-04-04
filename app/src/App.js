@@ -1,28 +1,39 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Route, NavLink } from 'react-router-dom';
+
 import './App.css';
+import Login from './Login/Login';
+import Users from './Users/Users';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+      <>
+        <header>
+          <NavLink to="/">Home</NavLink>
+          &nbsp;|&nbsp;
+          <NavLink to="/login">Login</NavLink>
+          &nbsp;|&nbsp;
+          <NavLink to="/users">Users</NavLink>
+          &nbsp;|&nbsp;
+          <button onClick={this.logout}>Logout</button>
         </header>
-      </div>
+        <main>
+          <Route path="/" exact component={Home} />
+          <Route path="/login" component={Login} />
+          <Route path="/users" component={Users} />
+        </main>
+      </>
     );
   }
+
+  logout = () => {
+    localStorage.removeItem('token');
+  };
+}
+
+function Home(props) {
+  return <h1>Home Component</h1>;
 }
 
 export default App;
