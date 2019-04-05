@@ -28,13 +28,8 @@ class App extends Component {
   }
 
   handleLogout = () => {
-    // use history.push(), clear localStorage
     localStorage.removeItem('token');
     this.props.history.push('/');
-    // if (!localStorage.token){
-    //   return <Redirect to='/' />
-    // }
-    // console.log(this.props);
   }
 
 }
