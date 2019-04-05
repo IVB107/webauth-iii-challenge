@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-class Login extends Component {
+
+class Register extends Component {
   state = {
     username: '',
-    password: ''
-  };
+    password: '',
+    department: ''
+  }
 
   render() {
     return (
@@ -33,29 +35,39 @@ class Login extends Component {
             />
           </div>
           <div>
-            <button type="submit">Login</button>
+            <label htmlFor="department" />
+            <input
+              value={this.state.department}
+              onChange={this.handleInputChange}
+              id="department"
+              type="department"
+              placeholder="department"
+            />
+          </div>
+          <div>
+            <button type="submit">Register</button>
           </div>
         </form>
       </>
     );
   }
-
+  
   handleSubmit = e => {
     e.preventDefault();
-    const endpoint = 'http://localhost:5000/api/login';
-
+    const endpoint = 'http://localhost:5000/api/register';
+    
     axios
-      .post(endpoint, this.state)
-      .then(res => {
-        console.log(res);
-        localStorage.setItem('token', res.data.token);
-        this.props.history.push('/users');
-      })
-      .catch(err => {
-        console.log('Login Error: ', err);
-      })
+    .post(endpoint, this.state)
+    .then(res => {
+      console.log(res);
+      localStorage.setItem('token', res.data.token);
+      this.props.history.push('/users');
+    })
+    .catch(err => {
+      console.log('Login Error: ', err);
+    })
   }
-
+  
   handleInputChange = e => {
     const { id, value } = e.target;
     this.setState({
@@ -63,7 +75,7 @@ class Login extends Component {
       [id]: value
     })
   }
-
+  
 }
 
-export default withRouter(Login);
+export default withRouter(Register);

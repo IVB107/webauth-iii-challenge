@@ -5,24 +5,12 @@ const jwt = require('jsonwebtoken');
 const secret = require('../api/secrets.js');
 const Users = require('../users/users-model.js');
 
-router.post('/register', (req, res) => {
-  let user = req.body;
-  user.password = bcrypt.hashSync(user.password, 8);
-
-  Users.add(user)
-    .then(saved => {
-      res.status(201).json(saved);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
-});
-
 const generateToken = user => {
 
   const payload = {
     subject: user.id,
-    username: user.username
+    username: user.username,
+    department: user.departmnent
   }
 
   const options = {
@@ -31,6 +19,23 @@ const generateToken = user => {
 
   return jwt.sign(payload, secret.jwtSecret, options);
 }
+
+router.post('/register', (req, res) => {
+  let user = req.body;
+  user.password = bcrypt.hashSync(user.password, 8);
+
+  Users.add(user)
+    .then(saved => {
+      const token = generateToken(saved);
+      res.status(201).json({
+        message: `Welcome, ${saved.username}!`,
+        token
+      })
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
 
 router.post('/login', (req, res) => {
   let { username, password } = req.body;
