@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 
-class Login extends React.Component {
+class Login extends Component {
   state = {
-    username: 'sam',
-    password: 'pass',
+    username: 'ivb',
+    password: 'veggies'
   };
 
   render() {
@@ -37,25 +37,29 @@ class Login extends React.Component {
     );
   }
 
-  handleSubmit = event => {
-    event.preventDefault();
+  handleSubmit = e => {
+    e.preventDefault();
+    const endpoint = 'http://localhost:5000/api/login';
 
-    const endpoint = 'http://localhost:5000/api/auth/login';
     axios
       .post(endpoint, this.state)
       .then(res => {
-        console.log('LOGIN RESPONSE', res);
+        console.log(res);
         localStorage.setItem('token', res.data.token);
       })
-      .catch(error => {
-        console.error('LOGIN ERROR', error);
-      });
-  };
+      .catch(err => {
+        console.log('Login Error: ', err);
+      })
+  }
 
-  handleInputChange = event => {
-    const { id, value } = event.target;
-    this.setState({ [id]: value });
-  };
+  handleInputChange = e => {
+    const { id, value } = e.target;
+    this.setState({
+      ...this.state,
+      [id]: value
+    })
+  }
+
 }
 
 export default Login;

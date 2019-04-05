@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import requiresAuth from '../auth/requiresAuth';
+import requiresAuth from '../auth/requireAuth';
 
 class Users extends React.Component {
   state = {
@@ -21,17 +21,19 @@ class Users extends React.Component {
     );
   }
 
-  componentDidMount() {
-    const endpoint = `/users`;
+  componentDidMount = () => {
+    const endpoint = '/users';
     axios
       .get(endpoint)
       .then(res => {
+        console.log(res);
         this.setState({ users: res.data });
       })
-      .catch(error => {
-        console.error('USERS ERROR', error);
+      .catch(err => {
+        console.log('Error Retrieving Users: ', err);
       });
   }
+
 }
 
 export default requiresAuth(Users);
