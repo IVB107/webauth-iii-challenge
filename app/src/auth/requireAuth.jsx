@@ -9,13 +9,14 @@ axios.interceptors.request.use(function(requestConfig) {
   return requestConfig;
 });
 
-export default function(Component) {
+export default (Component) => {
   return class Authenticated extends React.Component {
     render() {
       const token = localStorage.getItem('token');
-      const notLoggedIn = <h3>Please login to see the users</h3>;
-
-      return <>{token ? <Component {...this.props} /> : notLoggedIn}</>;
+      const notLoggedIn = <h3>Please Log In</h3>
+  
+      // return axios.create({ headers: { authorization: token } });
+      return <>{ token ? <Component {...this.props}/> : notLoggedIn }</>
     }
-  };
+  }
 }
